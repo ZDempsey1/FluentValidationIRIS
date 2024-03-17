@@ -1,0 +1,43 @@
+﻿@using FluentValidationIRIS.Models
+
+<div class="row">
+    <div class="ma-6 d-flex justify-center">
+        <MudCard Width="500px">
+            <MudChip Color="Color.Primary">Account Registration Page</MudChip>
+            <MudForm Model="model" Validation="UnitValidation.ValidateUnit" @ref="@page1">
+                <MudCardContent>
+                    <MudTextField @bind-Value="model.UnitId" For="@(() => model.UnitId)" Immediate Label="UnitID"></MudTextField>
+                    <MudTextField @bind-Value="model.Make" T="string" For="@(() => model.Make)" Immediate Label="Make"></MudTextField>
+                    <MudTextField @bind-Value="model.Vin" For="@(() => model.Vin)" Immediate Label="Vin"></MudTextField>
+                    <MudTextField @bind-Value="model.Model" For="@(() => model.Model)" Immediate Label="Model"></MudTextField>
+                    <MudTextField @bind-Value="model.CashValue" For="@(() => model.CashValue)" Immediate Label="Cash"></MudTextField>
+                    <MudCheckBox @bind-Value="model.HasCollision" T="bool" For="@(() => model.HasCollision)" Immediate Label="HasCollision"></MudCheckBox>
+                 </MudCardContent> 
+                @*  <MudCardActions>
+                    <MudButton Variant="Variant.Outlined" OnClick="ValidateAndMoveNext" Size="Size.Medium">Next</MudButton>
+                    <MudText>@CurrentPage</MudText>
+                 </MudCardActions> *@
+             </MudForm>
+         </MudCard>
+     </div>
+ </div>
+
+    @code {
+    [Parameter][EditorRequired]
+    public Unit model { get; set; }
+    UnitValidatorPageOne UnitValidation = new();
+    [Parameter]
+    public int CurrentPage { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnPageValidation { get; set; }
+    [Parameter]
+    public MudForm page1 { get; set; }
+    
+
+    private async Task ValidatePage()
+    {
+        var validator = new UnitValidatorPageOne();
+        var validationResult = await validator.ValidateAsync(model);
+        await OnPageValidation.InvokeAsync(validationResult.IsValid);
+    }
+}

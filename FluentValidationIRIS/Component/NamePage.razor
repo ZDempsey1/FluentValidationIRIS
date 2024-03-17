@@ -1,0 +1,40 @@
+﻿@using FluentValidationIRIS.Models
+
+<div class="row">
+    <div class="ma-6 d-flex justify-center">
+        <MudCard Width="500px">
+            <MudChip Color="Color.Primary">Account Registration Page</MudChip>
+            <MudForm Model="model" Validation="UnitValidation.ValidatePerson" @ref="@page2">
+                <MudCardContent>
+                    <MudTextField @bind-Value="model.DriverName" For="@(() => model.DriverName)" Immediate Label="Name"></MudTextField>
+                    <MudTextField @bind-Value="model.Address" For="@(() => model.Address)" Immediate Label="Address"></MudTextField>
+                    <MudTextField @bind-Value="model.City" For="@(() => model.City)" Immediate Label="City"></MudTextField>
+                    <MudTextField @bind-Value="model.State" For="@(() => model.State)" Immediate Label="State"></MudTextField>
+                    <MudTextField @bind-Value="model.Zip" For="@(() => model.Zip)" Immediate Label="zip"></MudTextField>
+                </MudCardContent>
+                @* <MudCardActions>
+                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" OnClick="@(async () => await UpdatePage())">Register</MudButton>
+                </MudCardActions> *@
+            </MudForm>
+        </MudCard>
+    </div>
+ </div>
+  
+ @code {
+    [Parameter][EditorRequired]
+    public Unit model { get; set; }
+    UnitValidatorPageTwo UnitValidation = new();
+    [Parameter]
+    public int CurrentPage { get; set; }
+    [Parameter]
+    public MudForm page2 { get; set; }
+    [Parameter]
+    public EventCallback<bool> OnPageValidation { get; set; }
+
+    private async Task ValidatePage()
+    {
+        var validator = new UnitValidatorPageTwo();
+        var validationResult = await validator.ValidateAsync(model);
+        await OnPageValidation.InvokeAsync(validationResult.IsValid);
+    }
+}

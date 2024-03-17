@@ -1,0 +1,53 @@
+﻿@page "/register"
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using FluentValidationIRIS.Models
+
+<div class="row">
+    <div class="ma-6 d-flex justify-center">
+        <MudCard Width="500px">
+            <MudChip Color="Color.Primary">Account Registration Page</MudChip>
+            <MudForm Model="model" Validation="registerValidation.ValidateValue">
+                <MudCardContent>
+                    <MudTextField @bind-value="model.Name" For="@(() => model.Name)" Immediate Label="Fullname"></MudTextField>
+                    <MudTextField @bind-value="model.Email" For="@(() => model.Email)" Immediate Label="Email Address" InputType="InputType.Email"></MudTextField>
+                     <MudTextField @bind-value="model.PhoneNumber" For="@(() => model.PhoneNumber)" Immediate Label="Contact Number" InputType="InputType.Telephone"></MudTextField>
+                    <MudTextField @bind-value="model.Password" For="@(() => model.Password)" Immediate Label="Password" InputType="InputType.Password"></MudTextField>
+                    <MudTextField @bind-value="model.ConfirmPassword" For="@(() => model.ConfirmPassword)" Immediate Label="Confirm Password" InputType="InputType.Password"></MudTextField>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" ButtonType="ButtonType.Submit">Register</MudButton>
+                </MudCardActions>
+            </MudForm>
+        </MudCard>
+    </div>
+</div>
+
+@code{
+    // Unit model = new();
+    // UnitValidatorPageOne UnitValidation = new();
+
+    RegistrationModel model = new();
+
+    RegistrationModelValidation registerValidation = new();
+}
+
+@* <div class="row">
+    <div class="ma-6 d-flex justify-center">
+        <MudCard Width="500px">
+            <MudChip Color="Color.Primary">Account Registration Page</MudChip>
+            <MudForm Model="model" Validation="UnitValidation.">
+                <MudCardContent>
+                    <MudTextField @bind-value="model.Make" For="@(() => model.Make)" Immediate Label="Make"></MudTextField>
+                     <MudTextField @bind-value="model.Vin" For="@(() => model.Vin)" Immediate Label="Vin" ></MudTextField>
+                     <MudTextField @bind-value="model.Model" For="@(() => model.Model)" Immediate Label="Model" ></MudTextField>
+                     <MudTextField @bind-value="model.CashValue" For="@(() => model.CashValue)" Immediate Label="Cash" ></MudTextField>
+                     <MudTextField ValueChanged="CollisionChanged" Value="model.HasCollision" For="@(() => model.HasCollision)" Immediate Label="HasCollision"></MudTextField>
+                 </MudCardContent>
+                 <MudCardActions>
+                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" ButtonType="ButtonType.Submit">Register</MudButton>
+                 </MudCardActions>
+             </MudForm>
+         </MudCard>
+     </div>
+ </div> *@

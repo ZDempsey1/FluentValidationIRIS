@@ -1,0 +1,101 @@
+﻿@page "/create"
+@using FluentValidation.Results
+@using FluentValidationIRIS.Component
+@using FluentValidationIRIS.Models
+@using FluentValidation
+@inject NavigationManager NavigationManager
+@inject ISnackbar snackbar
+
+
+<MudButton Variant="Variant.Outlined" OnClick="HandleNext" Size="Size.Medium">Next</MudButton>
+<MudText>@currentPage</MudText>
+<MudButton Variant="Variant.Outlined" OnClick="HandleBack" Size="Size.Medium">Previous</MudButton>
+    <MudForm @ref="page1">
+    @if (currentPage == 1)
+    {
+        <UnitPage model="@unit" OnPageValidation="HandlePageValidation"  />
+    }
+    </MudForm>
+    <MudForm @ref="page2">
+    @if (currentPage == 2)
+    {    
+        <NamePage model="@unit" OnPageValidation="HandlePageValidation"  />
+    }
+    </MudForm>
+@if(currentPage == 3)
+{
+    <MudText>Details</MudText>
+}
+@code {
+
+    public int currentPage = 1;
+    Unit unit = new Unit();
+    Unit newUnit = new();
+    MudForm page2;
+    MudForm page1;
+
+
+    private void HandleBack()
+    {
+        if (currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task HandleNext()
+    {
+        if(currentPage ==1)
+        {
+            if (page1 != null)
+            {
+                await page1.Validate();
+
+                if (page1.IsValid)
+                {
+                    currentPage++;
+                }
+                else
+                {
+                    snackbar.Add("Validation failed. Please correct the errors.", MudBlazor.Severity.Error);
+                }
+            }
+        }
+        else if (currentPage == 2)
+        {            
+            if (page2 != null) 
+            {                
+                await page2.Validate();
+
+                if (page2.IsValid)
+                {
+                    currentPage++;
+                }
+                else
+                {
+                    snackbar.Add("Validation failed. Please correct the errors.", MudBlazor.Severity.Error);
+                }
+            }
+        }
+    }
+    private async Task HandlePageValidation(bool isValid)
+    {
+        if (isValid)
+        {
+            currentPage++;
+        }
+        else
+        {
+            snackbar.Add("Validation failed. Please correct the errors.", MudBlazor.Severity.Error);
+        }
+    }
+    private async Task ValidatePage()
+    {
+        await page2.Validate();
+    }
+
+    void submitUnit()
+    {
+        snackbar.Add("submitted", MudBlazor.Severity.Success);
+    }
+}
